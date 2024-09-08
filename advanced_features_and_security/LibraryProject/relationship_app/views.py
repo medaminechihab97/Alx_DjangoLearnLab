@@ -120,6 +120,12 @@ from django.contrib.auth.decorators import permission_required
 
 # Create your views here.
 #Function-based views
+# from typing import Any
+# from django.shortcuts import redirect, render
+# from LibraryProject.bookshelf.models import Book
+# from LibraryProject.relationship_app.models import Library
+
+
 def list_books(request):
     books = Book.objects.all() #fetching all books from the database
     context = {'list_books':books} #creates a context dictionary with list of books
