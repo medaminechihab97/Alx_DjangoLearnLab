@@ -47,6 +47,7 @@ STATICFILES_DIRS = [
 ]
 
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -92,6 +93,7 @@ DATABASES = {
         'PORT': '3306',
     }
 }
+AUTH_USER_MODEL = 'blog.CustomUser'
 
 
 # Password validation
