@@ -116,7 +116,7 @@ class PostDetailView(DetailView):
             context['comment_form'] = form
             return self.render_to_response(context)
 @login_required
-def CommentCreationView(request, post_id):
+def CommentCreateView(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.method == 'POST':
         form = CommentForm(request.POST)
