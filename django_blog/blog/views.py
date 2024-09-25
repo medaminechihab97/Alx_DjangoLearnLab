@@ -9,6 +9,8 @@ from django.views.generic import (
     ListView, DetailView, CreateView, UpdateView, DeleteView
 )
 from django.db.models import Q
+from taggit.models import Tag
+
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
@@ -162,7 +164,7 @@ def search_posts(request):
         posts = Post.objects.all()
     return render(request, 'blog/search_results.html', {'posts': posts, 'query': query})
 
-def posts_by_tag(request, tag_name):
-    tag = get_object_or_404(Tag, name=tag_name)
+def posts_by_tag(request, tag_slug):
+    tag = get_object_or_404(Tag, name=tag_slug)
     posts = Post.objects.filter(tags=tag)
     return render(request, 'blog/posts_by_tag.html', {'tag': tag, 'posts': posts})
