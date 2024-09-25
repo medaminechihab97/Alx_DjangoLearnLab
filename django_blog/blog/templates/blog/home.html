@@ -1,0 +1,13 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    <h1>Welcome to the Django Blog!</h1>
+    <p>This is the home page where you can find the latest blog posts.</p>
+    {% for post in posts %}
+        <div class="post-preview">
+            <h2><a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a></h2>
+            <p>{{ post.content|truncatewords:50 }}</p>
+            <p>Published on: {{ post.published_date }}</p>
+            <p>Author: {{ post.author.username }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
