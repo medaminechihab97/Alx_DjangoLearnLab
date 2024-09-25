@@ -16,7 +16,7 @@ def register(request):
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(request, f'Account created for {username}!')
-            return redirect('progile')
+            return redirect('profile')
     else:
         form = UserRegisterForm()
     return render(request, 'blog/register.html', {'form': form})
@@ -41,7 +41,7 @@ def profile(request):
         if u_form.is_valid():
             u_form.save()
             messages.success(request, f'Your account has been updated!')
-            return redirect('profile')
+            return redirect('accounts/profile')
     else:
         u_form = UserUpdateForm(instance=request.user)
 
@@ -115,7 +115,21 @@ class PostDetailView(DetailView):
             context = self.get_context_data(**kwargs)
             context['comment_form'] = form
             return self.render_to_response(context)
-
+@login_required
+def CommentCreationView(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            messages.success(request, 'Your comment has been added successfully.')
+            return redirect('blog:post_detail', pk=post.id)
+    else:
+        form = CommentForm()
+    return render(request, 'blog/add_comment.html', {'form': form, 'post': post})
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Comment
     form_class = CommentForm
@@ -135,3 +149,4 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         comment = self.get_object()
         return self.request.user == comment.author
+
